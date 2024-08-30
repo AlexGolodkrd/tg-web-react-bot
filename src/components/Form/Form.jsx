@@ -1,16 +1,55 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Form.css";
+import { useTelegram } from "../Hooks/useTelegram";
 
 const Form = () => {
   const [country, setCountry] = useState();
-  const [city, setCity] = useState();
+  const [street, setStreet] = useState();
   const [subject, setSubject] = useState("physical");
+  const { tg } = useTelegram();
+
+  useEffect(() => {
+    tg.MainButton.setParams({
+      text: "Отправить данные",
+    });
+  });
+
+  useEffect(() => {
+    if (!street || !country) {
+      tg.MainButton.hide();
+    } else {
+      tg.MainButton.show();
+    }
+  }, [country, street]);
+
+  const onChangeCountry = (e) => {
+    setCountry(e.target.value);
+  };
+  const onChangeStreet = (e) => {
+    setStreet(e.target.value);
+  };
+  const onChangeSubject = (e) => {
+    setSubject(e.target.value);
+  };
+
   return (
     <div className={"form"}>
       <h3>Введите данные</h3>
-      <input className={"i"} type="text" placeholder={"Страна"} />
-      <input className={"i"} type="text" placeholder={"Улица"} />
-      <select className={"select"}>
+      <input
+        className={"input"}
+        type="text"
+        placeholder={"Страна"}
+        value={country}
+        onCHange={OnChangeCountry}
+      />
+      <input
+        className={"input"}
+        type="text"
+        placeholder={"Улица"}
+        value={street}
+        onCHange={OnChangeStreet}
+      />
+      <select value={subject} onChange={onChangeSubject} className={"select"}>
         <option value="physical">Юр.лицо</option>
         <option value="legal">Физ.лицо</option>
       </select>
