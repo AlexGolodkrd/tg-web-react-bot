@@ -15,14 +15,14 @@ const Form = () => {
       subject,
     };
     tg.sendData(JSON.stringify(data));
-  }, []);
+  }, [country, street, subject]);
 
   useEffect(() => {
     tg.onEvent("mainButtonClicked", onSendData);
     return () => {
       tg.offEvent("mainButtonClicked", onSendData);
     };
-  }, []);
+  }, [onSendData]);
 
   useEffect(() => {
     tg.MainButton.setParams({
@@ -56,14 +56,14 @@ const Form = () => {
         type="text"
         placeholder={"Страна"}
         value={country}
-        onCHange={OnChangeCountry}
+        onChange={onChangeCountry}
       />
       <input
         className={"input"}
         type="text"
         placeholder={"Улица"}
         value={street}
-        onCHange={OnChangeStreet}
+        onChange={onChangeStreet}
       />
       <select value={subject} onChange={onChangeSubject} className={"select"}>
         <option value="physical">Юр.лицо</option>
